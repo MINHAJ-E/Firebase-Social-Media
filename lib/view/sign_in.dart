@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/services/firebase_auth.dart';
+import 'package:firebsesample/services/phone_sign_in.dart';
 import 'package:firebsesample/services/google_sign_in.dart';
-import 'package:firebsesample/services/sign_in_github.dart';
+import 'package:firebsesample/services/github_sign_in.dart';
 import 'package:firebsesample/view/google_sign_in.dart';
 import 'package:firebsesample/view/home_screen.dart';
 import 'package:firebsesample/view/phone_sign_in.dart';
@@ -127,7 +127,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("Forgot password ?"),
+                    Text(
+                      "Forgot password ?",
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
                   ],
                 ),
               ),

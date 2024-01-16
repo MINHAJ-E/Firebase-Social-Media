@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/services/firebase_auth.dart';
+import 'package:firebsesample/services/phone_sign_in.dart';
 import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 
