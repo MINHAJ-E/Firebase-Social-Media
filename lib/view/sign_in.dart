@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebsesample/services/firebase_auth.dart';
+import 'package:firebsesample/view/google_sign_in.dart';
+import 'package:firebsesample/view/home_screen.dart';
+import 'package:firebsesample/view/phone_sign_in.dart';
 import 'package:firebsesample/view/sign_up.dart';
 import 'package:firebsesample/widgets/my_button.dart';
 import 'package:firebsesample/widgets/my_square_tile.dart';
@@ -17,11 +20,26 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  signUpUser() {
-    FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+  // signUpUser() {
+  //   FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+  //       email: usernameController.text,
+  //       password: passwordController.text,
+  //       context: context);
+  //   Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+  //   usernameController.text = "";
+  //   passwordController.text = "";
+  // }
+
+  loginUser() {
+    FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(
         email: usernameController.text,
         password: passwordController.text,
         context: context);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+    usernameController.text = "";
+    passwordController.text = "";
   }
 
   @override
@@ -83,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               MyButton(
                 onTap: () {
-                  signUpUser();
+                  loginUser();
                 },
                 name: 'Sign In',
               ),
@@ -109,14 +127,28 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SqureTile(imagePath: "asset/search.png"),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GoogleSignIn()));
+                      },
+                      child: SqureTile(imagePath: "asset/search.png")),
                   SizedBox(
                     width: 20,
                   ),
                   SqureTile(imagePath: "asset/facebook.png"),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PhoneSignIn()));
+                      },
+                      child: SqureTile(imagePath: "asset/cell-phone.png")),
                 ],
               ),
               const SizedBox(

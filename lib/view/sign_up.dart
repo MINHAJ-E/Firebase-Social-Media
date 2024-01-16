@@ -1,3 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebsesample/services/firebase_auth.dart';
+import 'package:firebsesample/view/home_screen.dart';
 import 'package:firebsesample/widgets/my_button.dart';
 import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +13,24 @@ class SignUp extends StatefulWidget {
 }
 
 class _LoginPageState extends State<SignUp> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  signUpUser() {
+    FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
+        email: usernameController.text,
+        password: passwordController.text,
+        context: context);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+    usernameController.text = "";
+    passwordController.text = "";
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
         ),
@@ -56,89 +71,18 @@ class _LoginPageState extends State<SignUp> {
               const SizedBox(
                 height: 20,
               ),
-
-              MyTextfield(
-                controller: passwordController,
-                hintText: "Confirm Password",
-                obsecureText: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              MyTextfield(
-                controller: passwordController,
-                hintText: "Phone number",
-                obsecureText: true,
-              ),
               const SizedBox(
                 height: 20,
               ),
               MyButton(
-                onTap: signInUser(),
+                onTap: () {
+                  signUpUser();
+                },
                 name: 'Sign Up',
               ),
               const SizedBox(
                 height: 20,
               ),
-
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // MyButton(onTap: signInUser()),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // const Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 25.0),
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //           child: Divider(
-              //         thickness: 0.5,
-              //         color: Colors.black,
-              //       )),
-              //       Text('Or continue with'),
-              //       Expanded(
-              //           child: Divider(
-              //         thickness: 0.5,
-              //         color: Colors.black,
-              //       ))
-              //     ],
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
-              // const Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     SqureTile(imagePath: "asset/search.png"),
-              //     SizedBox(
-              //       width: 20,
-              //     ),
-              //     SqureTile(imagePath: "asset/facebook.png"),
-              //   ],
-              // ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Text(
-              //       'Not a member?',
-              //       style: TextStyle(
-              //         color: Colors.grey[700],
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       width: 5,
-              //     ),
-              //     const Text(
-              //       'Register Now',
-              //       style: TextStyle(
-              //           color: Colors.blue, fontWeight: FontWeight.bold),
-              //     )
-              //   ],
-              // )
             ],
           ),
         ));
