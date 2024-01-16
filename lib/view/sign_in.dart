@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebsesample/services/firebase_auth.dart';
+import 'package:firebsesample/services/google_sign_in.dart';
+import 'package:firebsesample/services/sign_in_github.dart';
 import 'package:firebsesample/view/google_sign_in.dart';
 import 'package:firebsesample/view/home_screen.dart';
 import 'package:firebsesample/view/phone_sign_in.dart';
@@ -10,7 +12,7 @@ import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  LoginPage({super.key, required void Function() onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -31,15 +33,48 @@ class _LoginPageState extends State<LoginPage> {
   //   passwordController.text = "";
   // }
 
-  loginUser() {
-    FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(
-        email: usernameController.text,
-        password: passwordController.text,
-        context: context);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-    usernameController.text = "";
-    passwordController.text = "";
+  // loginUser() {
+  //   FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(
+  //       email: usernameController.text,
+  //       password: passwordController.text,
+  //       context: context);
+  //   Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+  //   usernameController.text = "";
+  //   passwordController.text = "";
+  // }
+
+  // final usernameController = TextEditingController();
+  // final passwordController = TextEditingController();
+
+  void SignIn() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: usernameController.text, password: passwordController.text);
+      if (context.mounted) Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      displaydlg(e.code);
+    }
+  }
+
+  void displaydlg(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(message),
+        );
+      },
+    );
   }
 
   @override
@@ -101,7 +136,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               MyButton(
                 onTap: () {
-                  loginUser();
+                  // loginUser();
+                  SignIn();
                 },
                 name: 'Sign In',
               ),
@@ -132,14 +168,17 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => GoogleSignIn()));
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => GoogleSignIn()));
+                        AuthServices().signInWithGoogle();
                       },
                       child: SqureTile(imagePath: "asset/search.png")),
                   SizedBox(
                     width: 20,
                   ),
-                  SqureTile(imagePath: "asset/facebook.png"),
+                  GestureDetector(
+                      onTap: () => AuthServicesGithub().signInWithGithub(),
+                      child: SqureTile(imagePath: "asset/github-sign.png")),
                   SizedBox(
                     width: 20,
                   ),
@@ -168,8 +207,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SignUp()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignUp(
+                                onTap: () {},
+                              )));
                     },
                     child: const Text(
                       'Register Now',

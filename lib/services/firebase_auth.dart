@@ -64,6 +64,7 @@ class FirebaseAuthMethods {
         },
         verificationFailed: (e) {
           showSnackbar(context, e.message!);
+          print(e.message);
         },
         codeSent: ((String verificationId, int? resentToken) async {
           showOTPDialog(

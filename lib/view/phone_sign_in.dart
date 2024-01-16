@@ -29,7 +29,11 @@ class _PhoneSignInState extends State<PhoneSignIn> {
               controller: phoneController,
               hintText: "phone number",
               obsecureText: false),
-          ElevatedButton(onPressed: phoneSignIn, child: Text("Sent OTP"))
+          ElevatedButton(
+              onPressed: () {
+                phoneSignIn();
+              },
+              child: Text("Sent OTP"))
         ],
       ),
     );
