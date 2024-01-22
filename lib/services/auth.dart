@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/services/logIn_red.dart';
+import 'package:firebsesample/auth/logIn_red.dart';
 import 'package:firebsesample/view/home_screen.dart';
 import 'package:flutter/material.dart';
 

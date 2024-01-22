@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebsesample/controller/authentication_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,10 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void signOut() {
-    FirebaseAuth.instance.signOut();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +19,22 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                signOut();
+                Provider.of<AutheticationProvider>(context, listen: false)
+                    .signOut();
               },
               icon: Icon(Icons.logout)),
         ],
       ),
       body: Center(
-        child: Image.asset("asset/padlock (1).png"),
-      ),
+          child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.asset("asset/padlock (1).png"),
+            Image.asset("asset/padlock (1).png"),
+            Image.asset("asset/padlock (1).png"),
+          ],
+        ),
+      )),
     );
   }
 }

@@ -1,15 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/services/phone_sign_in.dart';
-import 'package:firebsesample/services/google_sign_in.dart';
-import 'package:firebsesample/services/github_sign_in.dart';
-import 'package:firebsesample/view/google_sign_in.dart';
-import 'package:firebsesample/view/home_screen.dart';
-import 'package:firebsesample/view/phone_sign_in.dart';
-import 'package:firebsesample/view/sign_up.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebsesample/controller/authentication_provider.dart';
 import 'package:firebsesample/widgets/my_button.dart';
 import 'package:firebsesample/widgets/my_square_tile.dart';
 import 'package:firebsesample/widgets/my_textfield.dart';
-import 'package:flutter/material.dart';
+import 'package:firebsesample/view/phone_sign_in.dart';
+import 'package:firebsesample/view/sign_up.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key, required void Function() onTap});
@@ -19,53 +16,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  // signUpUser() {
-  //   FirebaseAuthMethods(FirebaseAuth.instance).signUpWithEmail(
-  //       email: usernameController.text,
-  //       password: passwordController.text,
-  //       context: context);
-  //   Navigator.of(context)
-  //       .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-  //   usernameController.text = "";
-  //   passwordController.text = "";
-  // }
-
-  // loginUser() {
-  //   FirebaseAuthMethods(FirebaseAuth.instance).loginWithEmail(
-  //       email: usernameController.text,
-  //       password: passwordController.text,
-  //       context: context);
-  //   Navigator.of(context)
-  //       .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-  //   usernameController.text = "";
-  //   passwordController.text = "";
-  // }
-
-  // final usernameController = TextEditingController();
-  // final passwordController = TextEditingController();
-
-  void SignIn() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: usernameController.text, password: passwordController.text);
-      if (context.mounted) Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      displaydlg(e.code);
-    }
-  }
-
   void displaydlg(String message) {
     showDialog(
       context: context,
@@ -79,14 +29,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        // appBar: AppBar(
-        //   backgroundColor: Colors.amber,
-        // ),
+    final provider = Provider.of<AutheticationProvider>(context, listen: false);
 
-        backgroundColor: Colors.grey[400],
-        body: Center(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.grey[400],
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
@@ -107,15 +56,15 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               MyTextfield(
-                controller: usernameController,
+                controller: provider.usernameController,
                 hintText: "Username",
                 obsecureText: false,
               ),
               const SizedBox(
-                height: 20,
+                height: 5,
               ),
               MyTextfield(
-                controller: passwordController,
+                controller: provider.passwordController,
                 hintText: "Password",
                 obsecureText: true,
               ),
@@ -140,13 +89,66 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20,
               ),
               MyButton(
-                onTap: () {
-                  // loginUser();
-                  SignIn();
+                name: "sign",
+                onTap: () async {
+                  String username = provider.usernameController.text.trim();
+                  String password = provider.passwordController.text.trim();
+
+                  if (username.isEmpty || password.isEmpty) {
+                    // Show an alert if email or password is not typed properly
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Incomplete Information'),
+                          content: const Text(
+                              'Please enter both username and password.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    try {
+                      UserCredential userCredential = await provider
+                          .signInWithEmailandPassword(username, password);
+
+                      // Do something with userCredential if needed
+
+                      // User exists, clear controllers
+                      provider.passwordController.clear();
+                      provider.usernameController.clear();
+                    } catch (e) {
+                      // Show an alert that the user does not exist
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('User Not Found'),
+                            content: const Text(
+                                'The entered username or password is incorrect.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  }
                 },
-                name: 'Sign In',
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               const Padding(
@@ -154,16 +156,18 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   children: [
                     Expanded(
-                        child: Divider(
-                      thickness: 0.5,
-                      color: Colors.black,
-                    )),
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.black,
+                      ),
+                    ),
                     Text('Or continue with'),
                     Expanded(
-                        child: Divider(
-                      thickness: 0.5,
-                      color: Colors.black,
-                    ))
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.black,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -173,16 +177,18 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => GoogleSignIn()));
-                        AuthServices().signInWithGoogle();
+                        Provider.of<AutheticationProvider>(context,
+                                listen: false)
+                            .singupWithGoogle();
                       },
                       child: SqureTile(imagePath: "asset/search.png")),
                   SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
-                      onTap: () => AuthServicesGithub().signInWithGithub(),
+                      onTap: () => Provider.of<AutheticationProvider>(context,
+                              listen: false)
+                          .signInWithGithub(context),
                       child: SqureTile(imagePath: "asset/github-sign.png")),
                   SizedBox(
                     width: 20,
@@ -227,6 +233,8 @@ class _LoginPageState extends State<LoginPage> {
               )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
