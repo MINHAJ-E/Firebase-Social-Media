@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, unused_local_variable, unnecessary_string_escapes
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +11,7 @@ import 'package:firebsesample/view/phone_sign_in.dart';
 import 'package:firebsesample/view/sign_up.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key, required void Function() onTap});
+  const LoginPage({super.key, required void Function() onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -148,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               const Padding(
@@ -181,24 +183,26 @@ class _LoginPageState extends State<LoginPage> {
                                 listen: false)
                             .singupWithGoogle();
                       },
-                      child: SqureTile(imagePath: "asset/search.png")),
-                  SizedBox(
+                      child: const SqureTile(imagePath: "asset/search.png")),
+                  const SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
                       onTap: () => Provider.of<AutheticationProvider>(context,
                               listen: false)
                           .signInWithGithub(context),
-                      child: SqureTile(imagePath: "asset/github-sign.png")),
-                  SizedBox(
+                      child:
+                          const SqureTile(imagePath: "asset/github-sign.png")),
+                  const SizedBox(
                     width: 20,
                   ),
                   GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PhoneSignIn()));
+                            builder: (context) => const PhoneSignIn()));
                       },
-                      child: SqureTile(imagePath: "asset/cell-phone.png")),
+                      child:
+                          const SqureTile(imagePath: "asset/cell-phone.png")),
                 ],
               ),
               const SizedBox(

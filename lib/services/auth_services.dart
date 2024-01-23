@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebsesample/constant/constants.dart';
 import 'package:firebsesample/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -73,5 +74,16 @@ class AuthServicesss {
           .showSnackBar(SnackBar(content: Text(e.toString())));
       throw Exception(e);
     }
+  }
+
+  //search services
+
+  static Future<QuerySnapshot> searchUsers(String name) async {
+    Future<QuerySnapshot> users = usersRef
+        .where('name', isGreaterThanOrEqualTo: name)
+        .where('name', isLessThan: '${name}z')
+        .get();
+
+    return users;
   }
 }

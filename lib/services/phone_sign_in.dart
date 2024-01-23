@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebsesample/widgets/show_otp_dialog.dart';
 import 'package:firebsesample/widgets/show_snackbar.dart';
@@ -35,8 +37,6 @@ class FirebaseAuthMethods {
                 Navigator.of(context).pop();
               });
         }),
-        codeAutoRetrievalTimeout: (String verificationId) {
-          //auto resolution time out....
-        });
+        codeAutoRetrievalTimeout: (String verificationId) {});
   }
 }

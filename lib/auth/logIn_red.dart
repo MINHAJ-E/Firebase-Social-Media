@@ -1,15 +1,16 @@
+// ignore_for_file: file_names
 import 'package:firebsesample/view/sign_in.dart';
 import 'package:firebsesample/view/sign_up.dart';
 import 'package:flutter/material.dart';
 
-class Login_Reg extends StatefulWidget {
-  const Login_Reg({Key? key}) : super(key: key);
+class LoginReg extends StatefulWidget {
+  const LoginReg({Key? key}) : super(key: key);
 
   @override
-  State<Login_Reg> createState() => _Login_RegState();
+  State<LoginReg> createState() => _LoginRegState();
 }
 
-class _Login_RegState extends State<Login_Reg> {
+class _LoginRegState extends State<LoginReg> {
   bool showLoginPage = true;
 
   void toggle() {

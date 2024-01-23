@@ -1,4 +1,3 @@
-import 'package:firebsesample/services/google_sign_in.dart';
 import 'package:firebsesample/widgets/my_button.dart';
 import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -21,21 +20,21 @@ class _GoogleSignInState extends State<GoogleSignIn> {
       ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           MyTextfield(
               obsecureText: false,
               hintText: "email",
               controller: emailController),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           MyTextfield(
               obsecureText: false,
               hintText: "email",
               controller: passwordController),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           MyButton(

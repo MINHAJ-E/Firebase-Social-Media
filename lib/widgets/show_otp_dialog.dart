@@ -8,14 +8,14 @@ void showOTPDialog({
   showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text("Enter OTP"),
+            title: const Text("Enter OTP"),
             content: Column(children: <Widget>[
               TextField(
                 controller: codeController,
               )
             ]),
             actions: <Widget>[
-              TextButton(onPressed: onpressed, child: Text("Done")),
+              TextButton(onPressed: onpressed, child: const Text("Done")),
             ],
           ));
 }

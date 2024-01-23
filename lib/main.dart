@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebsesample/controller/authentication_provider.dart';
+import 'package:firebsesample/controller/bottom_provider.dart';
+import 'package:firebsesample/controller/chat_provider.dart';
 import 'package:firebsesample/services/auth.dart';
 import 'package:firebsesample/services/firebase_options.dart';
+import 'package:firebsesample/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,8 +25,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AutheticationProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => PostProvider(),
+        ),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: AuthPage(),
       ),

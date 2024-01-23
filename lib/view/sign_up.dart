@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:firebsesample/controller/authentication_provider.dart';
-import 'package:firebsesample/services/phone_sign_in.dart';
 import 'package:firebsesample/view/home_screen.dart';
 import 'package:firebsesample/widgets/my_button.dart';
 import 'package:firebsesample/widgets/my_textfield.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({Key? key, required void Function() onTap}) : super(key: key);
+  const SignUp({Key? key, required void Function() onTap}) : super(key: key);
 
   @override
   State<SignUp> createState() => _LoginPageState();
@@ -57,11 +57,11 @@ class _LoginPageState extends State<SignUp> {
               hintText: "Password",
               obsecureText: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             MyTextfield(
-              controller: value.Confpasswordcontroller,
+              controller: value.confpasswordcontroller,
               hintText: "Conform",
               obsecureText: true,
             ),
@@ -77,7 +77,7 @@ class _LoginPageState extends State<SignUp> {
                 // Check if any field is empty
                 if (value.usernameController.text.isEmpty ||
                     value.passwordController.text.isEmpty ||
-                    value.Confpasswordcontroller.text.isEmpty) {
+                    value.confpasswordcontroller.text.isEmpty) {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -100,7 +100,7 @@ class _LoginPageState extends State<SignUp> {
 
                 // Check if the password and confirmation password match
                 if (value.passwordController.text ==
-                    value.Confpasswordcontroller.text) {
+                    value.confpasswordcontroller.text) {
                   try {
                     // If they match, call the signUpWithEmailandPassword method
                     await value.signUpWithEmailandPassword(
@@ -109,13 +109,13 @@ class _LoginPageState extends State<SignUp> {
                     );
                     value.usernameController.clear();
                     value.passwordController.clear();
-                    value.Confpasswordcontroller.clear();
+                    value.confpasswordcontroller.clear();
 
                     // Navigate to the home screen after successful account creation
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
+                        builder: (context) => const HomeScreen(),
                       ),
                     );
                   } catch (e) {

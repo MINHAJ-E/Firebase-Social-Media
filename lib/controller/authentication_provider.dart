@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebsesample/services/auth_services.dart';
 import 'package:firebsesample/services/phone_sign_in.dart';
@@ -8,7 +10,7 @@ class AutheticationProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController Confpasswordcontroller = TextEditingController();
+  final TextEditingController confpasswordcontroller = TextEditingController();
 
   Future<UserCredential>? user;
   AuthServicesss authservices = AuthServicesss();
