@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/constant/constants.dart';
 import 'package:firebsesample/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,7 +18,6 @@ class AuthServicesss {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      // Handle specific error codes for invalid credentials
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         throw Exception('Invalid email or password');
       } else {
@@ -74,16 +72,5 @@ class AuthServicesss {
           .showSnackBar(SnackBar(content: Text(e.toString())));
       throw Exception(e);
     }
-  }
-
-  //search services
-
-  static Future<QuerySnapshot> searchUsers(String name) async {
-    Future<QuerySnapshot> users = usersRef
-        .where('name', isGreaterThanOrEqualTo: name)
-        .where('name', isLessThan: '${name}z')
-        .get();
-
-    return users;
   }
 }

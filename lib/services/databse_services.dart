@@ -19,7 +19,7 @@ class DataBaseService {
 
   Stream<QuerySnapshot<Mesaage>> getDataOrderByTimestamp() {
     return messageRef
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: false)
         .snapshots()
         .handleError((error) {
       print("Error fetching data: $error");
@@ -85,7 +85,9 @@ class DataBaseService {
   Future<List<String>> getUserNames() async {
     try {
       QuerySnapshot<Mesaage> snapshot = await messageRef.get();
-      return snapshot.docs.map((doc) => doc.data().email ?? "").toList();
+      return snapshot.docs
+          .map((doc) => doc.data().email ?? "No email")
+          .toList();
     } catch (e) {
       print("Error fetching user names: $e");
       return [];

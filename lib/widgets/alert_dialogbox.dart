@@ -9,9 +9,6 @@ AlertDialog alert(BuildContext context) {
     actions: [
       TextButton(
         onPressed: () {
-          // saved();
-          // _taskController.text='';
-
           Provider.of<AutheticationProvider>(context, listen: false).signOut();
           Navigator.of(context).pop();
         },

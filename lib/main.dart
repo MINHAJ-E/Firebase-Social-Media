@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebsesample/controller/authentication_provider.dart';
-import 'package:firebsesample/controller/bottom_provider.dart';
 import 'package:firebsesample/controller/chat_provider.dart';
+import 'package:firebsesample/controller/search_provider.dart';
 import 'package:firebsesample/services/auth.dart';
 import 'package:firebsesample/services/firebase_options.dart';
-import 'package:firebsesample/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PostProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
         ),
       ],
       child: const MaterialApp(

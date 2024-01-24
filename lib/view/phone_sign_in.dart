@@ -3,14 +3,9 @@ import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PhoneSignIn extends StatefulWidget {
+class PhoneSignIn extends StatelessWidget {
   const PhoneSignIn({super.key});
 
-  @override
-  State<PhoneSignIn> createState() => _PhoneSignInState();
-}
-
-class _PhoneSignInState extends State<PhoneSignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

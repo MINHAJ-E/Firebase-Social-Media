@@ -7,14 +7,9 @@ import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SignUp extends StatefulWidget {
+class SignUp extends StatelessWidget {
   const SignUp({Key? key, required void Function() onTap}) : super(key: key);
 
-  @override
-  State<SignUp> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final value = Provider.of<AutheticationProvider>(context, listen: false);
@@ -74,7 +69,6 @@ class _LoginPageState extends State<SignUp> {
             MyButton(
               name: "Register",
               onTap: () async {
-                // Check if any field is empty
                 if (value.usernameController.text.isEmpty ||
                     value.passwordController.text.isEmpty ||
                     value.confpasswordcontroller.text.isEmpty) {
@@ -115,7 +109,7 @@ class _LoginPageState extends State<SignUp> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => HomeScreen(),
                       ),
                     );
                   } catch (e) {

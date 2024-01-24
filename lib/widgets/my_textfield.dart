@@ -16,7 +16,6 @@ class MyTextfield extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return 'Please fill in the field';
     }
-    // Add more validation logic if needed
     return null;
   }
 

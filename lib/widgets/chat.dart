@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebsesample/controller/chat_provider.dart';
 import 'package:firebsesample/services/databse_services.dart';
+import 'package:firebsesample/widgets/delete.dart';
 import 'package:firebsesample/widgets/like.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class Post extends StatefulWidget {
   final int index;
   final String postid;
   final List<String> Likes;
+  final List<String> Follow;
   final DateTime? timestamp;
 
   const Post({
@@ -23,6 +25,7 @@ class Post extends StatefulWidget {
     required this.index,
     required this.postid,
     required this.Likes,
+    required this.Follow,
     required this.timestamp,
   }) : super(key: key);
 
@@ -41,26 +44,26 @@ class _PostState extends State<Post> {
     likeCount = widget.Likes.length;
   }
 
+  final currentUsers = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             children: [
               const Text(
@@ -74,7 +77,7 @@ class _PostState extends State<Post> {
                 width: 10,
               ),
               Text(
-                widget.email.split('@').first,
+                widget.email,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -89,17 +92,16 @@ class _PostState extends State<Post> {
               Like(
                 isliked: isLiked,
                 onTap: () {
-                  setState(() {
-                    isLiked = !isLiked;
-                    if (isLiked) {
-                      widget.Likes.add(
-                          FirebaseAuth.instance.currentUser!.email!);
-                    } else {
-                      widget.Likes.remove(
-                          FirebaseAuth.instance.currentUser!.email!);
-                    }
-                    likeCount = widget.Likes.length;
-                  });
+                  //
+                  isLiked = !isLiked;
+                  if (isLiked) {
+                    widget.Likes.add(FirebaseAuth.instance.currentUser!.email!);
+                  } else {
+                    widget.Likes.remove(
+                        FirebaseAuth.instance.currentUser!.email!);
+                  }
+                  likeCount = widget.Likes.length;
+                  //
 
                   DocumentReference postref = FirebaseFirestore.instance
                       .collection('users')
@@ -135,9 +137,46 @@ class _PostState extends State<Post> {
               color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
+          if (currentUsers.email == widget.email)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DeleteButton(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => deleteAlert(context),
+                    );
+                  },
+                ),
+              ],
+            ),
+        ]));
+  }
 
-          // if (currentUser.email == widget.userEmail)
-        ],
+  AlertDialog deleteAlert(BuildContext context) {
+    return AlertDialog(
+      title: const Text('are you sure ..!'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Provider.of<PostProvider>(context, listen: false)
+                .deletePost(widget.postid);
+            Navigator.of(context).pop();
+          },
+          child: const Text('DELETE'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('CANCEL'),
+        ),
+      ],
+      elevation: 24.0,
+      backgroundColor: Colors.grey[300],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }

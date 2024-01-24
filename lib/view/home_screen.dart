@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebsesample/controller/authentication_provider.dart';
 import 'package:firebsesample/controller/chat_provider.dart';
 import 'package:firebsesample/model/chat_model.dart';
 import 'package:firebsesample/services/databse_services.dart';
@@ -11,18 +12,16 @@ import 'package:firebsesample/widgets/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({
+class HomeScreen extends StatelessWidget {
+  HomeScreen({
     super.key,
   });
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   TextEditingController haicontroller = TextEditingController();
+  final currentUser = FirebaseAuth.instance.currentUser;
+
   List<String> messages = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,16 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SearchScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SearchScreen()));
             },
             icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
-              // Provider.of<AutheticationProvider>(context, listen: false)
-              //     .signOut();
-              //  onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) => alert(context),
@@ -61,6 +57,20 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (currentUser != null)
+              Card(
+                elevation: 8,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Logged in as: ${currentUser!.email}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             Expanded(
               child: StreamBuilder<QuerySnapshot<Mesaage>>(
                 stream: DataBaseService().getDataOrderByTimestamp(),
@@ -95,7 +105,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         index: index,
                         postid: post.id ?? "",
                         Likes: post.Likes ?? [],
+                        Follow: post.Follow ?? [],
                         timestamp: post.timestamp,
+                        // Follow:post. [],
                       );
                     },
                   );

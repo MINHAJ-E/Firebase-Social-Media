@@ -7,6 +7,7 @@ class Mesaage {
   String? message;
   String? email;
   List<String>? Likes;
+  List<String>? Follow;
   DateTime? timestamp;
 
   Mesaage({
@@ -14,6 +15,7 @@ class Mesaage {
     this.message,
     this.email,
     this.Likes,
+    this.Follow,
     this.timestamp,
   });
 
@@ -23,6 +25,7 @@ class Mesaage {
       email: json['email'],
       message: json['message'],
       Likes: List<String>.from(json['Likes'] ?? []),
+      Follow: List<String>.from(json['Follow'] ?? []),
       timestamp: json['timestamp'] != null
           ? (json['timestamp'] as Timestamp).toDate()
           : null,
@@ -34,6 +37,7 @@ class Mesaage {
       'email': email,
       'message': message,
       'Likes': Likes,
+      'Follow': Follow,
       'timestamp': timestamp,
     };
   }

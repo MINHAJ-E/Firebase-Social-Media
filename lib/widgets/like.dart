@@ -20,10 +20,6 @@ class Like extends StatelessWidget {
             color: isliked ? Colors.red : Colors.green,
           ),
           const SizedBox(width: 4),
-          // Text(
-          //   isliked ? 'Favorite' : 'Favorite Border',
-          //   style: TextStyle(color: isliked ? Colors.red : Colors.green),
-          // ),
         ],
       ),
     );
