@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: const Text(
-          "TWEEETTER",
+          "CONNECT HUB",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
